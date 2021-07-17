@@ -10,5 +10,13 @@ namespace Business
         public string Type { get; set; }
         public string Url { get; set; }
 
+        public UploadFileMetadata(string name, string description, string type, string url)
+        {
+            Id = Guid.NewGuid();
+            Name = name;
+            Description = description;
+            Type = type;
+            Url = url;
+        }
     }
 }
