@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using WebApi.Utilities;
 
@@ -20,6 +22,9 @@ namespace WebApi.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly string _permittedExtensions = "pdf";
+
+        private static readonly FormOptions _defaultFormOptions = new FormOptions();
 
         public WeatherForecastController(ILogger<WeatherForecastController> logger)
         {
@@ -81,8 +86,7 @@ namespace WebApi.Controllers
                                 contentDisposition.FileName.Value);
 
                         streamedFileContent =
-                            await FileHelpers.ProcessStreamedFile(section, contentDisposition,
-                                ModelState, _permittedExtensions, _fileSizeLimit);
+                            await FileHelpers.ProcessStreamedFile(section, contentDisposition, ModelState);
 
                         if (!ModelState.IsValid)
                         {
